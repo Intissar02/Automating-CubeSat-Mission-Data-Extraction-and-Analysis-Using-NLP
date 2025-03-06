@@ -30,11 +30,11 @@ class MissionDescription(models.Model):
         super().delete(*args, **kwargs)
 
     class Meta:
-        db_table = 'mission_description'  # Matches PostgreSQL table name, case-sensitive
+        db_table = 'mission_description'  
 
 
 class MissionsTechnology(models.Model):
-    id = models.IntegerField(primary_key=True)  # Matches 'id' as integer in PostgreSQL schema
+    id = models.IntegerField(primary_key=True) 
     mission_name = models.CharField(max_length=255)  # Mission name
     payload = models.CharField(max_length=255, null=True, blank=True)  # Payload (optional)
     frequency_band = models.CharField(max_length=255, null=True, blank=True)  # Frequency band (optional)
@@ -60,4 +60,4 @@ class MissionsTechnology(models.Model):
         super().delete(*args, **kwargs)
 
     class Meta:
-        db_table = 'missions_technology_v2'  # Matches PostgreSQL table name
+        db_table = 'missions_technology_v2'  

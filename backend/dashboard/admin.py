@@ -2,8 +2,8 @@ from django.contrib import admin
 from .models import MissionDescription, MissionsTechnology
 
 class MissionDescriptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'mission_name', 'country', 'organization', 'type', 'status', 'launch_date', 'launchers')  # Include new fields
-    list_filter = ('type', 'status')  # Corrected field names
+    list_display = ('id', 'mission_name', 'country', 'organization', 'type', 'status', 'launch_date', 'launchers')  
+    list_filter = ('type', 'status')  
     search_fields = ('mission_name', 'country', 'organization')
 
 admin.site.register(MissionDescription, MissionDescriptionAdmin)
