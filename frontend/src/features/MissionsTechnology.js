@@ -4,10 +4,30 @@ import { FiChevronDown } from 'react-icons/fi';
 function MissionsTechnology() {
   const [technology, setTechnology] = useState([]);
 
+  // Define the priority frequency bands
+  const priorityBands = ['UHF', 'VHF', 'S-Band', 'L-Band', '2.4 GHz', '400.0375 MHz'];
+
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/missions-technology/')
       .then(response => response.json())
-      .then(data => setTechnology(data));
+      .then(data => {
+        // Sort the data: priority bands first, then the rest
+        const sortedData = data.sort((a, b) => {
+          const aPriority = priorityBands.includes(a.frequency_band);
+          const bPriority = priorityBands.includes(b.frequency_band);
+
+          // If both or neither are priority bands, sort alphabetically
+          if (aPriority === bPriority) {
+            if (a.frequency_band < b.frequency_band) return -1;
+            if (a.frequency_band > b.frequency_band) return 1;
+            return 0;
+          }
+
+          // If one is a priority band, it should come first
+          return aPriority ? -1 : 1;
+        });
+        setTechnology(sortedData);
+      });
   }, []);
 
   return (
@@ -15,8 +35,7 @@ function MissionsTechnology() {
       <div className="header">
         <h1 className="header-title">Missions Technology</h1>
         <div>
-          <button className="btn btn-outline"><FiChevronDown /> Export</button>
-          <button className="btn btn-primary">Add Technology</button>
+
         </div>
       </div>
       <div className="card">

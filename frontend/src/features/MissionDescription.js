@@ -30,8 +30,6 @@ function MissionDescription() {
       <div className="header">
         <h1 className="header-title">Mission Description</h1>
         <div>
-          <button className="btn btn-outline"><FiChevronDown /> Export</button>
-          <button className="btn btn-primary">Add Mission</button>
         </div>
       </div>
       <div className="card">

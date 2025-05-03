@@ -3,8 +3,9 @@ import './App.css';
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import { FiMenu, FiX, FiChevronDown, FiCpu, FiHome, FiSettings, FiInfo, FiDatabase } from 'react-icons/fi';
 import Select from 'react-select';
-import SettingsTab from './features/SettingsTab';
+import ContactTab from './features/ContactTab'; // ✅ FIXED: corrected component name
 import About from './features/About'; 
+import DataQuery from './features/DataQuery'; // NEW: Import the DataQuery component
 
 function Dashboard() {
   const [missions, setMissions] = useState([]);
@@ -100,9 +101,9 @@ function Dashboard() {
             <FiDatabase />
             <span>Mission Data</span>
           </Link>
-          <Link to="/settings" className={`sidebar-item ${window.location.pathname === '/settings' ? 'active' : ''}`}>
+          <Link to="/contact" className={`sidebar-item ${window.location.pathname === '/contact' ? 'active' : ''}`}>
             <FiSettings />
-            <span>Settings</span>
+            <span>Contact Us</span>
           </Link>
           <Link to="/about" className={`sidebar-item ${window.location.pathname === '/about' ? 'active' : ''}`}>
             <FiInfo />
@@ -113,7 +114,7 @@ function Dashboard() {
 
       <div className="main-content">
         <Routes>
-        <Route path="/home" element={
+          <Route path="/home" element={
             <>
               <div className="welcome-card" onClick={handleShowGraphs}>
                 <h1 className="welcome-title">Welcome to CubeSat Missions Dashboard</h1>
@@ -127,7 +128,7 @@ function Dashboard() {
 
               {showGraphs && (
                 <div className="graphs-vertical-container">
-                  {[1, 2, 3, 4].map((graphNumber) => (
+                  {[2, 3, 4].map((graphNumber) => (
                     <div 
                       key={`graph-${graphNumber}`}
                       className={`graph-container ${expandedGraph === graphNumber ? 'expanded' : ''}`}
@@ -155,15 +156,10 @@ function Dashboard() {
             </>
           } />
           
-          {/* Rest of your routes remain unchanged */}
           <Route path="/mission" element={
             <div>
               <div className="header">
                 <h1 className="header-title">Mission Description</h1>
-                <div>
-                  <button className="btn btn-outline"><FiChevronDown /> Export</button>
-                  <button className="btn btn-primary">Add Mission</button>
-                </div>
               </div>
               <div className="card">
                 <div className="table-container">
@@ -203,10 +199,6 @@ function Dashboard() {
             <div>
               <div className="header">
                 <h1 className="header-title">Missions Technology</h1>
-                <div>
-                  <button className="btn btn-outline"><FiChevronDown /> Export</button>
-                  <button className="btn btn-primary">Add Technology</button>
-                </div>
               </div>
               <div className="card">
                 <div className="table-container">
@@ -250,66 +242,8 @@ function Dashboard() {
               </div>
             </div>
           } />
-          <Route path="/data" element={
-            <div className="header">
-              <h1 className="header-title">Mission Data Query</h1>
-              <div className="filter-controls">
-                <Select
-                  options={countryOptions}
-                  value={selectedCountry ? { label: selectedCountry, value: selectedCountry } : null}
-                  onChange={option => setSelectedCountry(option ? option.value : '')}
-                  placeholder="Filter by Country..."
-                  isClearable
-                />
-                <Select
-                  options={componentOptions}
-                  value={selectedComponent ? { label: selectedComponent, value: selectedComponent } : null}
-                  onChange={option => setSelectedComponent(option ? option.value : '')}
-                  placeholder="Filter by Component..."
-                  isClearable
-                />
-                <button className="btn btn-outline" onClick={() => { setSelectedCountry(''); setSelectedComponent(''); }}>
-                  Reset Filters
-                </button>
-              </div>
-              <div className="card mt-4">
-                <div className="table-container">
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Mission Name</th>
-                        <th>Country</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {missions.flatMap(mission =>
-                        technology
-                          .filter(t => t.mission_name === mission.mission_name)
-                          .flatMap(t =>
-                            ['obc', 'com', 'adcs', 'eps', 'antenna'].map(comp => {
-                              const value = t[comp];
-                              if (
-                                (selectedCountry && mission.country !== selectedCountry) ||
-                                (selectedComponent && selectedComponent.toLowerCase() !== comp)
-                              ) return null;
-
-                              return (
-                                <tr key={`${mission.id}-${comp}`}>
-                                  <td>{mission.mission_name}</td>
-                                  <td>{mission.country}</td>
-                                  <td>{comp.toUpperCase()}</td>
-                                </tr>
-                              );
-                            }).filter(Boolean)
-                          )
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          } />
-          <Route path="/settings" element={<SettingsTab />} />
+          <Route path="/data" element={<DataQuery />} />
+          <Route path="/contact" element={<ContactTab />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
