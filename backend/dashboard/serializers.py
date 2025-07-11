@@ -10,3 +10,4 @@ class MissionsTechnologySerializer(serializers.ModelSerializer):
     class Meta:
         model = MissionsTechnology
         fields = '__all__'
+        
